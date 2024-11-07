@@ -25,20 +25,6 @@ jobs:
       - name: Install snowcli
         run: pip install snowflake-cli-labs
 
-      # Install 'yq' for parsing the snowflake.yml file
-      - name: Install yq
-        run: sudo snap install yq
-
-      # Get the database and schema from the snowflake.yml file and save them to the environment
-      - name: Set environment variables
-        run: |
-          export DATABASE=$(yq -e eval '.streamlit.database' snowflake.yml)
-          export SCHEMA=$(yq -e eval '.streamlit.schema' snowflake.yml)
-          export ROLE=$(yq -e eval '.streamlit.role' snowflake.yml)
-          echo "DATABASE=$DATABASE" >> $GITHUB_ENV
-          echo "SCHEMA=$SCHEMA" >> $GITHUB_ENV
-          echo "ROLE=$ROLE" >> $GITHUB_ENV
-
       # Configure the Snowflake CLI with necessary credentials and settings
       - name: Create snowcli config
         env:
