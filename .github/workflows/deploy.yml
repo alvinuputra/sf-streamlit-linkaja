@@ -23,7 +23,7 @@ jobs:
 
       # Install the Snowflake CLI (ensure version compatibility)
       - name: Install snowcli
-        run: pip install snowflake-cli-labs~=2.1
+        run: pip install snowflake-cli-labs
 
       # Install 'yq' for parsing the snowflake.yml file
       - name: Install yq
@@ -52,10 +52,12 @@ jobs:
           account = "$SNOWFLAKE_ACCOUNT"
           user = "$SNOWFLAKE_USER"
           password = "$SNOWFLAKE_PASSWORD"
-          connection_timeout = 600
-          database = "$DATABASE"
-          schema = "$SCHEMA"
-          role = "$ROLE"
+          host = "sfseapac-id-demo-alvin.snowflakecomputing.com"
+          port = "443"
+          database = "linkaja"
+          schema = "public"
+          warehouse = "XL_WH"
+          role = "ACCOUNTADMIN"
           EOF
           chmod 0600 ~/.snowflake/config.toml
 
