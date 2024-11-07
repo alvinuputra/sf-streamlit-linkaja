@@ -5,3 +5,6 @@ dependencies:
   - streamlit
   - snowflake-snowpark-python
   - python-dotenv
+  - ydata-profiling
+  - matplotlib
+  - seaborn
