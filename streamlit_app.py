@@ -20,4 +20,4 @@ except:
             role=os.getenv('SNOWFLAKE_ROLE'),
         )
 
-st.title(f"Example streamlit app. {say_hello()}")
+st.title(f"Example streamlit app. {say_hello()} Alvin")
