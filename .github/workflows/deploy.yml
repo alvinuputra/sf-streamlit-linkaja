@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted # Ensure the 'ubuntu-latest' environment is available in your CI setup
+    runs-on: ubuntu-latest # Ensure the 'ubuntu-latest' environment is available in your CI setup
     environment: production
 
     steps:
