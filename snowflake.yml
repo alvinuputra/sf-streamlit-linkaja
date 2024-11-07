@@ -1,8 +1,12 @@
 definition_version: 1
 streamlit:
+  identifer:
+    name: streamlit_app
+    schema: public
+    database: linkaja
   name: streamlit_app
   stage: my_streamlit_stage
-  query_warehouse: my_streamlit_warehouse
+  query_warehouse: XL_WH
   main_file: streamlit_app.py
   env_file: environment.yml
   pages_dir: pages/
