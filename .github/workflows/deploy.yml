@@ -1,0 +1,65 @@
+name: Deploy App via snowcli
+
+# Trigger the workflow on a push to the 'main' branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # Ensure the 'ubuntu-latest' environment is available in your CI setup
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v4 # Check out the repository code
+
+      # Set up Python 3.8 for the job
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.8
+          cache: "pip"
+
+      # Install the Snowflake CLI (ensure version compatibility)
+      - name: Install snowcli
+        run: pip install snowflake-cli-labs~=2.1
+
+      # Install 'yq' for parsing the snowflake.yml file
+      - name: Install yq
+        run: sudo snap install yq
+
+      # Get the database and schema from the snowflake.yml file and save them to the environment
+      - name: Set environment variables
+        run: |
+          export DATABASE=$(yq -e eval '.streamlit.database' snowflake.yml)
+          export SCHEMA=$(yq -e eval '.streamlit.schema' snowflake.yml)
+          export ROLE=$(yq -e eval '.streamlit.role' snowflake.yml)
+          echo "DATABASE=$DATABASE" >> $GITHUB_ENV
+          echo "SCHEMA=$SCHEMA" >> $GITHUB_ENV
+          echo "ROLE=$ROLE" >> $GITHUB_ENV
+
+      # Configure the Snowflake CLI with necessary credentials and settings
+      - name: Create snowcli config
+        env:
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+        run: |
+          mkdir -p ~/.snowflake
+          cat << EOF > ~/.snowflake/config.toml
+          [connections.default]
+          account = "$SNOWFLAKE_ACCOUNT"
+          user = "$SNOWFLAKE_USER"
+          password = "$SNOWFLAKE_PASSWORD"
+          connection_timeout = 600
+          database = "$DATABASE"
+          schema = "$SCHEMA"
+          role = "$ROLE"
+          EOF
+          chmod 0600 ~/.snowflake/config.toml
+
+      # Deploy the Streamlit app using the Snowflake CLI
+      - name: Deploy the streamlit app
+        shell: bash
+        run: snow streamlit deploy --replace >> $GITHUB_STEP_SUMMARY
