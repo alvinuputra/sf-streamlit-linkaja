@@ -8,6 +8,7 @@ import seaborn as sns
 import datetime
 import snowflake.connector
 from snowflake.snowpark.context import get_active_session
+from snowflake.snowpark import Session
 from dotenv import load_dotenv
 import os
 load_dotenv()
@@ -334,6 +335,13 @@ if st.session_state.selected_table:
                 if plot_type == "Bar Chart":
                     fig, ax = plt.subplots()
                     st.session_state.data_df.groupby(x_axis)[y_axis].mean().plot(kind='bar', ax=ax)
+
+                    ax.set_facecolor('black')  # Set the background color of the plot area to black
+                    ax.grid(True, color='gray', linestyle='--', linewidth=0.5)  # Adjust grid lines
+                    st.pyplot(fig)
+
+                    fig, ax = plt.subplots()
+                    st.session_state.data_df.groupby(x_axis)[y_axis].mean().plot(kind='barh', ax=ax)  # Change to horizontal bar chart
 
                     ax.set_facecolor('black')  # Set the background color of the plot area to black
                     ax.grid(True, color='gray', linestyle='--', linewidth=0.5)  # Adjust grid lines

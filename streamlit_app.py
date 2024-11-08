@@ -1,6 +1,7 @@
 import streamlit as st
 from common.hello import say_hello
 import snowflake.connector
+from snowflake.snowpark import Session
 from snowflake.snowpark.context import get_active_session
 from dotenv import load_dotenv
 import os
