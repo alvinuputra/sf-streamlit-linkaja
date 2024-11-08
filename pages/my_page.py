@@ -340,12 +340,12 @@ if st.session_state.selected_table:
                     ax.grid(True, color='gray', linestyle='--', linewidth=0.5)  # Adjust grid lines
                     st.pyplot(fig)
 
-                    # fig, ax = plt.subplots()
-                    # st.session_state.data_df.groupby(x_axis)[y_axis].mean().plot(kind='barh', ax=ax)  # Change to horizontal bar chart
+                    fig, ax = plt.subplots()
+                    st.session_state.data_df.groupby(x_axis)[y_axis].mean().plot(kind='barh', ax=ax)  # Change to horizontal bar chart
 
-                    # ax.set_facecolor('black')  # Set the background color of the plot area to black
-                    # ax.grid(True, color='gray', linestyle='--', linewidth=0.5)  # Adjust grid lines
-                    # st.pyplot(fig)
+                    ax.set_facecolor('black')  # Set the background color of the plot area to black
+                    ax.grid(True, color='gray', linestyle='--', linewidth=0.5)  # Adjust grid lines
+                    st.pyplot(fig)
                 elif plot_type == "Line Chart":
                     fig, ax = plt.subplots()
                     st.session_state.data_df.plot(x=x_axis, y=y_axis, kind='line', ax=ax)
